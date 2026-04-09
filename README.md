@@ -1,45 +1,56 @@
-# RelativeLayout App - Toko Profil
+## Ringkasan Proyek
 
-Proyek ini adalah implementasi **RelativeLayout** pada aplikasi Android sederhana untuk menampilkan halaman profil toko yang detail dan estetis. Proyek ini dibangun sebagai bagian dari tugas pemrograman mobile.
+Pada halaman Profil Toko Bunga (`2_RelativeLayoutApp`), `RelativeLayout`
+dimanfaatkan untuk membangun komposisi visual secara dinamis tanpa terjebak posisi
+bertumpuk parah (*nested layout*). Keunggulan utamanya ada pada kemampuan meletakkan 
+satu bingkai mengacu pada koordinat referensi komponen di sisinya. Sebagai contoh,
+posisi foto profil toko (ikon melengkung) diletakkan tumpang tindih (*overlapping*)
+menjemput garis batas bawah pita *banner* punggung. Tulisan statistik serta tombol
+keranjang belanja sukses ditautkan bergantungan dari elemen utama satu sama lain
+hingga dasar halaman.
 
-## 📱 Ringkasan Proyek
+## Dokumentasi Teknis
 
-Aplikasi **RelativeLayout App** memberikan gambaran tentang bagaimana membangun antarmuka pengguna (UI) Android yang responsif dan terstruktur dengan menggunakan `RelativeLayout`. Aplikasi ini meniru profil nyata suatu layanan e-commerce atau jasa, lengkap dengan header, profil toko, ringkasan statistik, dekskripsi operasional, serta tombol _Call-to-Action_ (CTA).
+### 1. Penjelasan File Resource Pendukung
 
-### ✨ Fitur Utama Layout
+Sistem antarmuka menolak keras penggunaan sandi absolut seperti HEX secara lugu.
+Sebagai gantinya, pustaka tata warna disandarkan pada file eksternal `colors.xml`.
 
-- **Header & Profile Picture:** Menggunakan `RelativeLayout` bersarang dengan _elevation_ untuk memberikan efek kartu (_card-like_) pada foto profil.
-- **Toko Info:** Informasi nama toko dan deksripsi singkat yang disusun terpusat (_center horizontal_).
-- **Statistik Dinamis:** Penggunaan `LinearLayout` di dalam struktur utama untuk merapikan informasi _Rating_, _Lokasi_, dan _Status Buka/Tutup_ secara sejajar (_horizontal weight sum_).
-- **Tentang Toko:** Teks deskripsi paragraf komprehensif.
-- **Call-to-Action (CTA):** Tombol "Chat" dan "Pesan Sekarang" yang ditempatkan di bagian bawah (_aligned to bottom_) menggunakan kombinasi `RelativeLayout` dan `LinearLayout`.
+-   **Fungsinya:** Memberikan label variabel (*alias*) untuk sandi warna 
+    eksperimental seperti hijau dedaunan lebat menjadi `@color/sage_green`, dan 
+    abu pucat menjadi `@color/bg_ivory`. 
+-   **Mengapa dipisah?:** Pemisahan tabel warna ke pusaran `/res/values/`
+    merupakan doktrin kebersihan arsitektur yang mutlak. Manakala identitas merek
+    Toko Bunga ini hijrah nuansa, programmer tak perlu berburu belasan sandi
+    pada baris kode XML, melainkan secukupnya mengganti sebuah variabel global 
+    agar riasan seisi wajah aplikasi bermutasi sekejap mata.
 
-## 🎨 Palet Warna Terpasang
+### 2. Penjelasan Logika Layout Utama (`activity_main.xml`)
 
-Desain menggunakan warna khusus untuk menciptakan kesan _smooth_, bersih, dan rileks:
+Berbekal **RelativeLayout**, komponen tak diuntai lurus seperti peron gerbong,
+namun ditanam berdasarkan kait jangkar antara elemen tetangga yang disasarkan.
 
-- `bg_ivory` (#FDFBF7) - Latar belakang utama aplikasi yang memberikan kesan hangat dan nyaman.
-- `sage_green` (#9CAF88) - Warna aksen utama untuk banner, tombol aksi utama, dan teks penanda status.
-- `white` (#FFFFFFFF) - Aksen netral untuk komponen menonjol.
-- `text_dark` (#4A4A4A) - Warna teks sekunder agar lebih mudah dan nyaman dibaca.
-- `black` (#FF000000) - Warna untuk teks utama (_heading_).
+-   **`layout_alignParentTop="true"`**: Digunakan khusus memborgol posisi pita
+    iklan (Banner) murni merekat tanpa celah di atap peranti langit. 
+-   **`layout_below="@id/header_banner"`**: Properti utama yang menggantungkan 
+    selingan kontainer profil layaknya sarang laba-laba, jatuh tepat di telapak
+    kaki banner.
+-   **`layout_marginTop="-60dp"`**: Memodifikasi wujud absolut. Margin minus
+    ini mendorong pilar profil menabrak dinding ke atas, mengizinkan gambar
+    bulat toko tenggelam memotong siluet batasan banner hijau di atasnya.
 
-## 🛠 Teknologi & Struktur
+### 3. Alur Visual
 
-- **Bahasa / Format:** XML (Android Layout), Kotlin / Java.
-- **Struktur UI:** `RelativeLayout` sebagai kontainer utama dengan _nesting_ `LinearLayout` minimal untuk grup baris/kolom otomatis.
-- **Minimum SDK:** Sesuai konfigurasi default Android Studio terbaru.
+Lompatan layar disusun berdasarkan jejaring ikat magnet antar blok kode:
 
-## 🚀 Instalasi & Menjalankan Aplikasi
-
-1. *Clone* repositori ini:
-   ```bash
-   git clone https://github.com/Vraken9/RelativeLayoutApps.git
-   ```
-2. Buka proyek ini menggunakan **Android Studio**.
-3. Tunggu hingga _Gradle Sync_ selesai.
-4. Jalankan aplikasi pada *Emulator* (Android Virtual Device) atau di *Perangkat Android Fisik* (via USB Debugging/Wireless).
-
----
-> Proyek disusun untuk memenuhi tugas Pemrograman Mobile (Topik: Layout - RelativeLayout).
-
+1.  **Lempengan Cakrawala (Header Banner)**: Sehelai bentangan pita dipantek kaku
+    berwarna dedaunan menghabiskan seperlima volume kanvas seluler paling udik.
+2.  **Serangan Lumba-Lumba (Icon Profile Overlap)**: Kontainer putih lambang 
+    toko memusat presisi horisontal, ditarik ke ambang garis bawah pita banner,
+    kemudian dikenakan margin pantul balik (minus) agar tertelan setengah rupa.
+3.  **Terjun Bebas Indikator Angka**: Gelar identitas toko dan baris panjang
+    bintang ulasan (statistik rating) dirajut rontok bergantung mengikuti punggung
+    elemen sebelumnya (Teks Nama Toko).
+4.  **Fondasi Sepatu**: Segala elemen tertutup dengan pemanggilan aksi di tombol 
+    perintah obrolan bawah (*Action Buttons*) yang merapat pada tepian lantai
+    abadi menggunakan `layout_alignParentBottom="true"`.
